@@ -1,6 +1,8 @@
 import os
 from zipfile import ZipFile
 
+from openpyxl.reader.excel import load_workbook
+
 from path import resources_path, zip_path
 from pypdf import PdfReader
 
@@ -23,4 +25,20 @@ def test_pdf_file():
         assert original_file.pages[3].extract_text() == archived_file.pages[3].extract_text()
 
 
-def
+def test_xlsx_file():
+    with (ZipFile(zip_path, 'r') as zf):
+        original_file = load_workbook(os.path.join(resources_path,'file_example_XLSX_50.xlsx'))
+        archived_file = load_workbook(zf.open('file_example_XLSX_50.xlsx'))
+        for worksheet in original_file.sheetnames:
+            original_sheet = original_file[worksheet]
+            archived_sheet = archived_file[worksheet]
+        for row in range(1, original_sheet.max_row + 1):
+            for col in range(1, original_sheet.max_column + 1):
+                original_cell = original_sheet.cell(row, col)
+                archived_cell = archived_sheet.cell(row, col)
+                if original_cell.value == archived_cell.value:
+                    result = True
+                else:
+                    result = False
+                    break
+        assert result == True
