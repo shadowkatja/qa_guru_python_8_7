@@ -2,6 +2,7 @@ import os
 from zipfile import ZipFile
 
 from openpyxl.reader.excel import load_workbook
+import xlrd
 
 from path import resources_path, zip_path
 from pypdf import PdfReader
@@ -42,3 +43,24 @@ def test_xlsx_file():
                     result = False
                     break
         assert result == True
+
+def test_xls_file():
+    with (ZipFile(zip_path, 'r') as zf):
+        with zf.open('file_example_XLS_10.xls') as xls:
+            temp = xls.read()
+            archived_file = xlrd.open_workbook(file_contents=temp)
+        original_file = xlrd.open_workbook(os.path.join(resources_path, 'file_example_XLS_10.xls'))
+        assert original_file.sheet_names() == archived_file.sheet_names()
+        original_sheet = original_file.sheet_by_index(0)
+        archived_sheet = archived_file.sheet_by_index(0)
+        assert original_sheet.nrows == archived_sheet.nrows
+        assert original_sheet.ncols == archived_sheet.ncols
+        for rownum in range(original_sheet.nrows):
+            if original_sheet.row_values(rownum) == archived_sheet.row_values(rownum):
+                result = True
+            else:
+                result = False
+                break
+        assert result == True
+
+
