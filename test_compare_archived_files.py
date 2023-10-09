@@ -37,12 +37,7 @@ def test_xlsx_file():
             for col in range(1, original_sheet.max_column + 1):
                 original_cell = original_sheet.cell(row, col)
                 archived_cell = archived_sheet.cell(row, col)
-                if original_cell.value == archived_cell.value:
-                    result = True
-                else:
-                    result = False
-                    break
-        assert result == True
+                assert original_cell.value == archived_cell.value
 
 def test_xls_file():
     with (ZipFile(zip_path, 'r') as zf):
@@ -56,11 +51,5 @@ def test_xls_file():
         assert original_sheet.nrows == archived_sheet.nrows
         assert original_sheet.ncols == archived_sheet.ncols
         for rownum in range(original_sheet.nrows):
-            if original_sheet.row_values(rownum) == archived_sheet.row_values(rownum):
-                result = True
-            else:
-                result = False
-                break
-        assert result == True
-
+            assert original_sheet.row_values(rownum) == archived_sheet.row_values(rownum)
 
