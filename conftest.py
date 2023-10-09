@@ -7,7 +7,7 @@ import pytest
 from path import tmp_path, resources_path, zip_path
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope='session', autouse=True)
 def create_zip():
     if not os.path.exists(tmp_path):
         os.mkdir(tmp_path)
