@@ -17,7 +17,6 @@ def create_tmp():
 @pytest.fixture(scope='function')
 def create_zip(create_tmp):
     folder = pathlib.Path(resources_path)
-    zip_path = os.path.join(tmp_path, 'archive.zip')
     with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zf:
         for file in folder.iterdir():
             zf.write(file, arcname=file.name)
