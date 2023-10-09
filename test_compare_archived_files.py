@@ -1,12 +1,9 @@
-import filecmp
 import os
 from zipfile import ZipFile
-import random
 
 from path import resources_path, zip_path
 from pypdf import PdfReader
 
-# check that all files are in archive
 def test_archive():
     resources_files = os.listdir(resources_path)
     with ZipFile(zip_path, 'r') as zf:
@@ -26,3 +23,4 @@ def test_pdf_file():
         assert original_file.pages[3].extract_text() == archived_file.pages[3].extract_text()
 
 
+def
